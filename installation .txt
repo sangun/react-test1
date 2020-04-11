@@ -1,0 +1,94 @@
+Steps to Install Fusion Banking:
+
+1.	Check the java Jdk Version(Command java -version) ,it should be 1.8.0_91 (64 Bit Server),it is better to uninstall every jdk from control panel,and copy jdk from 62 machine.
+
+2.	Install db2(use the Installation Instructions from the word file in the New_Environment_Setup folder in 62 machine).check whether db2 is install successfully or not.Go to Services (db2 copy should be there).right click->Properties->logon->username=FINASTRA/u722187 password="System password".
+
+
+	->Copy FBE from network and paste it in C drive and paste 3 jar files inside runtime.In the Path  C:\FBE\FusionInstaller\runtime.
+	
+	->open C:\FBE\FBCBS\DBSetupScripts open db2cmd prompt and run the createdb.bat file(follow the instructions in the word file)
+
+3.	open the workbench 64 bit,open connection,fill the details then add manage drivers->add jar file for db2(only db2 jar)->click ok->connection established.
+
+4.	Create "ENVIRONMENT_DEMO" empty folder in C drive.
+
+5.	Inside That create 2 empty folders "ENV_VAR","INSTALL_LOCATION" and copy the wildfly from network paste inside "ENVIRONMENT_DEMO".
+ 
+6.  copy ant from network and paste in c drive.
+
+8.	Install xming Server to increase heap size.
+
+9.	open C:\FBE\FusionInstaller open cmd prompt Launch_Installer_Setup.bat.
+
+10. follow the word file to delete 3 licences and add jar file in C:\ENVIRONMENT_DEMO\wildfly-10.0.0.Final\modules\system\layers\base\com\misys\fbp\mq\main (active mq and common all jars) and check modules xml file also.
+
+11. javax-> include jar file  C:\ENVIRONMENT_DEMO\wildfly-10.0.0.Final\modules\system\layers\base\javax\xml\registry\api\main
+
+12. run the cas queries in db2 and commit it(61 machine).
+
+13 run the camel queries and update the camel content with your machine name.
+
+14. Launch the wildfly server in bin->Standalone.bat.follow the word file.
+
+
+
+Backup:
+
+1. create backup folder and run db2 command,write the backup commands.
+
+
+Patch-up:
+
+1. Copy FBE new version from network ,and paste in C drive and rename the older FBE.
+
+2. Copy 3 jar files in runtime.
+
+3. launch Service patch.bat and click next->next.
+
+4. C:\ENVIRONMENT_DEMO\INSTALL-LOCATION\BankFusion\SYMBOLIC\Application 				C:\ENVIRONMENT_DEMO\INSTALL-LOCATION\BankFusion\SYMBOLIC\Application\BankFusionServer.jar\conf\license\     open 2nd file and uncomment all licences.
+
+5. run cas queries and commit it(85 machine).
+
+
+
+Apply Patches Of New Version:-
+
+1.\\misys.global.ad\bangalore\Dev\CMRE
+
+2. Open the workbench and check which are all services are active and check the versions.
+
+3. And compare version in the Local FBE  with the \\misys.global.ad\bangalore\Dev\CMRE.
+
+4. and add the new versions from \\misys.global.ad\bangalore\Dev\CMRE\CBS\DailyBuilds\5.5.2 to C:\FBE\FBCBS\Bundles\ServicePackBundle.
+
+5. and update the old appserver name and copy the new appserver from the latest CBS version.
+
+6. Do the Same Steps for all Active states.
+
+
+
+
+To Disable The Supervisor Permission
+
+1.Go to eventactiontable in workbench->data
+
+2. copy whole data as a ->copy sql update
+
+3.	disable the permissions using queries->UPDATE CBS.CBTB_EVENTACTION SET CBEVENTACTION = 'ignore' WHERE CBEVENTACTION in('business.referralPI','business.repeatableReferral','business.referral','business.passwordRequired','business.batchMaintenanceAction','dlebusiness.referralPI','business.creditorProfileReferralPI','lobusiness.referralPI','tellerBusiness.referral','tellerBusiness.referralPI','resetHL.referral','collbusiness.referralPI','intwriteoffbusiness.referralPI','FRCreate.referralPI','FRAmend.referralPI','CBSbusiness.referral','nominalCodeMappingBusiness.referral','Payments.referralPI','UBbusiness.referralPI');
+
+4.	Run that queries and commit it.
+
+5.	then restart the whole server 
+	or
+	http://blrlfbxhk72:8082/
+	
+	http://blrlfbxhk72:8082/ViewObjectRes//BankFusion%3AService%3DBusinessEventsService
+	
+	Restrat Services
+
+
+
+
+
+
